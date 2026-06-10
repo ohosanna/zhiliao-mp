@@ -1,0 +1,38 @@
+import { presetUni } from '@uni-helper/unocss-preset-uni'
+import { presetWot } from '@wot-ui/unocss-preset'
+
+import {
+  defineConfig,
+  presetIcons,
+  transformerDirectives,
+  transformerVariantGroup,
+} from 'unocss'
+
+export default defineConfig({
+  presets: [
+    presetUni({
+      attributify: false,
+    }),
+    presetWot({
+      preflight: false,
+    }),
+    presetIcons({
+      scale: 1.2,
+      warn: true,
+      extraProperties: {
+        'display': 'inline-block',
+        'vertical-align': 'middle',
+        'width': '1em',
+        'height': '1em',
+      },
+      // HBuilderX 必须针对要使用的 Collections 做异步导入
+      // collections: {
+      //   carbon: () => import('@iconify-json/carbon/icons.json').then(i => i.default),
+      // },
+    }),
+  ],
+  transformers: [
+    transformerDirectives(),
+    transformerVariantGroup(),
+  ],
+})
