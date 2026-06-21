@@ -1,68 +1,75 @@
 <script setup lang="ts">
 definePage({
-  name: 'register',
+  name: "register",
   style: {
-    navigationBarTitleText: '',
-    navigationStyle: 'custom',
+    navigationBarTitleText: "",
+    navigationStyle: "custom",
   },
-})
+});
 
-const statusBarHeight = ref(20)
+const statusBarHeight = ref(20);
 
 // #ifdef MP-WEIXIN
-const sysInfo = uni.getSystemInfoSync()
-statusBarHeight.value = sysInfo.statusBarHeight || 20
+const sysInfo = uni.getSystemInfoSync();
+statusBarHeight.value = sysInfo.statusBarHeight || 20;
 // #endif
 
 function goBack() {
-  uni.navigateBack()
+  uni.navigateBack();
 }
 
 const formData = ref({
-  gender: 'male', // 'male' | 'female'
-  birthday: '',
-  height: '',
-  weight: '',
-  diabetesType: '1', // '1' | '2' | 'other'
-})
+  gender: "male", // 'male' | 'female'
+  birthday: "",
+  height: "",
+  weight: "",
+  diabetesType: "1", // '1' | '2' | 'other'
+});
 
-let showDatePicker = ref(false)
+const showDatePicker = ref(false);
+const birthdayTimestamp = ref(0);
 
 function openDatePicker() {
-  showDatePicker.value = true
+  showDatePicker.value = true;
 }
 
-function onDateConfirm({ value }: { value: string }) {
-  formData.value.birthday = value
+function onDateConfirm({ value }: { value: number }) {
+  birthdayTimestamp.value = value;
+  // 将时间戳格式化为日期字符串 yyyy-MM-dd
+  const date = new Date(value);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  formData.value.birthday = `${year}-${month}-${day}`;
 }
 
-function selectGender(gender: 'male' | 'female') {
-  formData.value.gender = gender
+function selectGender(gender: "male" | "female") {
+  formData.value.gender = gender;
 }
 
-function selectDiabetesType(type: '1' | '2' | 'other') {
-  formData.value.diabetesType = type
+function selectDiabetesType(type: "1" | "2" | "other") {
+  formData.value.diabetesType = type;
 }
 
 function handleSubmit() {
   if (!formData.value.birthday) {
-    uni.showToast({ title: '请选择出生日期', icon: 'none' })
-    return
+    uni.showToast({ title: "请选择出生日期", icon: "none" });
+    return;
   }
   if (!formData.value.height) {
-    uni.showToast({ title: '请输入身高', icon: 'none' })
-    return
+    uni.showToast({ title: "请输入身高", icon: "none" });
+    return;
   }
   if (!formData.value.weight) {
-    uni.showToast({ title: '请输入体重', icon: 'none' })
-    return
+    uni.showToast({ title: "请输入体重", icon: "none" });
+    return;
   }
-  uni.showToast({ title: '注册成功', icon: 'success' })
+  uni.showToast({ title: "注册成功", icon: "success" });
 }
 </script>
 
 <template>
-  <view class="min-h-screen bg-gradient-to-b from-[#f0f4ff] to-white">
+  <view class="register-page min-h-screen bg-gradient-to-b from-[#f0f4ff] to-white">
     <!-- 顶部返回 -->
     <view :style="{ paddingTop: `${statusBarHeight + 12}px` }">
       <view class="px-4">
@@ -77,12 +84,8 @@ function handleSubmit() {
 
     <!-- 标题区 -->
     <view class="mt-6 px-6 text-center">
-      <text class="text-2xl font-bold wot-text-text-main">
-        实名信息
-      </text>
-      <text class="mt-2 block text-sm text-gray-500">
-        为保障您的健康数据安全，请完成实名认证
-      </text>
+      <text class="text-2xl font-bold wot-text-text-main"> 实名信息 </text>
+      <text class="mt-2 block text-sm text-gray-500"> 为保障您的健康数据安全，请完成实名认证 </text>
     </view>
 
     <!-- 步骤指示器 -->
@@ -115,9 +118,7 @@ function handleSubmit() {
 
     <!-- 步骤标题 -->
     <view class="mt-5 px-6 text-center">
-      <text class="text-base font-bold wot-text-text-main">
-        填写基本信息
-      </text>
+      <text class="text-base font-bold wot-text-text-main"> 填写基本信息 </text>
     </view>
 
     <!-- 表单卡片 -->
@@ -125,19 +126,17 @@ function handleSubmit() {
       <!-- 性别 -->
       <view class="mb-4">
         <view class="mb-2 flex items-center">
-          <text class="text-sm font-medium wot-text-text-main">
-            性别
-          </text>
-          <text class="ml-0.5 text-sm text-red-500">
-            *
-          </text>
+          <text class="text-sm font-medium wot-text-text-main"> 性别 </text>
+          <text class="ml-0.5 text-sm text-red-500"> * </text>
         </view>
         <view class="flex gap-3">
           <view
             class="flex flex-1 items-center justify-center gap-2 rounded-xl py-3"
-            :style="formData.gender === 'male'
-              ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
-              : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }"
+            :style="
+              formData.gender === 'male'
+                ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
+                : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }
+            "
             @click="selectGender('male')"
           >
             <wd-icon
@@ -154,9 +153,11 @@ function handleSubmit() {
           </view>
           <view
             class="flex flex-1 items-center justify-center gap-2 rounded-xl py-3"
-            :style="formData.gender === 'female'
-              ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
-              : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }"
+            :style="
+              formData.gender === 'female'
+                ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
+                : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }
+            "
             @click="selectGender('female')"
           >
             <wd-icon
@@ -177,39 +178,30 @@ function handleSubmit() {
       <!-- 出生日期 -->
       <view class="mb-4">
         <view class="mb-2 flex items-center">
-          <text class="text-sm font-medium wot-text-text-main">
-            出生日期
-          </text>
-          <text class="ml-0.5 text-sm text-red-500">
-            *
-          </text>
+          <text class="text-sm font-medium wot-text-text-main"> 出生日期 </text>
+          <text class="ml-0.5 text-sm text-red-500"> * </text>
         </view>
-        <view
-          class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3"
-          @click="openDatePicker"
-        >
-          <view class="flex items-center gap-2">
-            <wd-icon name="calendar" size="16px" color="#9ca3af" />
-            <text class="text-sm" :class="!formData.birthday ? 'text-gray-400' : 'wot-text-text-main'">
-              {{ formData.birthday || '请选择出生日期' }}
-            </text>
-          </view>
-          <wd-icon name="arrow-down" size="14px" color="#d1d5db" />
-        </view>
+        <wd-form-item custom-class="input-item">
+          <view class="value" @tap="showDatePicker = true">{{
+            formData.birthday || "请选择出生日期"
+          }}</view>
+          <wd-datetime-picker
+            v-model="formData.birthday"
+            v-model:visible="showDatePicker"
+            placehold="请选择出生日期"
+            type="date"
+          />
+        </wd-form-item>
       </view>
 
       <!-- 身高体重 -->
       <view class="mb-4 flex gap-3">
         <view class="flex-1">
           <view class="mb-2 flex items-center">
-            <text class="text-sm font-medium wot-text-text-main">
-              身高(cm)
-            </text>
-            <text class="ml-0.5 text-sm text-red-500">
-              *
-            </text>
+            <text class="text-sm font-medium wot-text-text-main"> 身高(cm) </text>
+            <text class="ml-0.5 text-sm text-red-500"> * </text>
           </view>
-          <view class="rounded-xl border border-gray-200 px-3 py-2.5">
+          <wd-form-item custom-class="input-item">
             <wd-input
               v-model="formData.height"
               placeholder="如 170"
@@ -217,18 +209,14 @@ function handleSubmit() {
               custom-class="form-input"
               clearable
             />
-          </view>
+          </wd-form-item>
         </view>
         <view class="flex-1">
           <view class="mb-2 flex items-center">
-            <text class="text-sm font-medium wot-text-text-main">
-              体重(kg)
-            </text>
-            <text class="ml-0.5 text-sm text-red-500">
-              *
-            </text>
+            <text class="text-sm font-medium wot-text-text-main"> 体重(kg) </text>
+            <text class="ml-0.5 text-sm text-red-500"> * </text>
           </view>
-          <view class="rounded-xl border border-gray-200 px-3 py-2.5">
+          <wd-form-item custom-class="input-item">
             <wd-input
               v-model="formData.weight"
               placeholder="如 65"
@@ -236,26 +224,24 @@ function handleSubmit() {
               custom-class="form-input"
               clearable
             />
-          </view>
+          </wd-form-item>
         </view>
       </view>
 
       <!-- 糖尿病类型 -->
       <view>
         <view class="mb-2 flex items-center">
-          <text class="text-sm font-medium wot-text-text-main">
-            糖尿病类型
-          </text>
-          <text class="ml-0.5 text-sm text-red-500">
-            *
-          </text>
+          <text class="text-sm font-medium wot-text-text-main"> 糖尿病类型 </text>
+          <text class="ml-0.5 text-sm text-red-500"> * </text>
         </view>
         <view class="flex gap-2.5">
           <view
             class="flex-1 items-center rounded-xl py-2.5 text-center"
-            :style="formData.diabetesType === '1'
-              ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
-              : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }"
+            :style="
+              formData.diabetesType === '1'
+                ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
+                : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }
+            "
             @click="selectDiabetesType('1')"
           >
             <text
@@ -267,9 +253,11 @@ function handleSubmit() {
           </view>
           <view
             class="flex-1 items-center rounded-xl py-2.5 text-center"
-            :style="formData.diabetesType === '2'
-              ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
-              : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }"
+            :style="
+              formData.diabetesType === '2'
+                ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
+                : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }
+            "
             @click="selectDiabetesType('2')"
           >
             <text
@@ -281,9 +269,11 @@ function handleSubmit() {
           </view>
           <view
             class="flex-1 items-center rounded-xl py-2.5 text-center"
-            :style="formData.diabetesType === 'other'
-              ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
-              : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }"
+            :style="
+              formData.diabetesType === 'other'
+                ? { backgroundColor: '#eff6ff', border: '1.5px solid #3b82f6' }
+                : { backgroundColor: '#f3f4f6', border: '1.5px solid #e5e7eb' }
+            "
             @click="selectDiabetesType('other')"
           >
             <text
@@ -307,9 +297,7 @@ function handleSubmit() {
           <wd-icon name="check" size="12px" color="#fff" />
         </view>
         <view class="flex flex-col">
-          <text class="text-sm font-medium" style="color: #d97706">
-            信息安全承诺
-          </text>
+          <text class="text-sm font-medium" style="color: #d97706"> 信息安全承诺 </text>
           <text class="mt-1 text-xs leading-relaxed text-gray-500">
             您的信息仅用于健康管理服务，我们将严格加密保护，绝不外泄
           </text>
@@ -319,12 +307,7 @@ function handleSubmit() {
 
     <!-- 完成按钮 -->
     <view class="px-4 pt-5">
-      <wd-button
-        type="primary"
-        block
-        custom-class="submit-btn"
-        @click="handleSubmit"
-      >
+      <wd-button type="primary" block round custom-class="submit-btn" @click="handleSubmit">
         完成
       </wd-button>
     </view>
@@ -333,53 +316,31 @@ function handleSubmit() {
     <view class="mt-4 px-6 text-center">
       <text class="text-xs text-gray-400">
         注册即表示同意
-        <text class="text-blue-500">
-          《用户服务协议》
-        </text>
+        <text class="text-blue-500"> 《用户服务协议》 </text>
         和
-        <text class="text-blue-500">
-          《隐私政策》
-        </text>
+        <text class="text-blue-500"> 《隐私政策》 </text>
       </text>
     </view>
 
     <!-- 底部安全区域 -->
     <wd-gap safe-area-bottom height="30px" />
-
-    <!-- 日期选择器 -->
-    <wd-datetime-picker
-      v-model="showDatePicker"
-      type="date"
-      title="选择出生日期"
-      @confirm="onDateConfirm"
-    />
   </view>
 </template>
 
-<style lang="scss" scoped>
-.form-input {
-  :deep(.wd-input) {
-    padding: 0;
-    background-color: transparent;
-    font-size: 13px;
+<style lang="scss">
+.register-page {
+  .input-item {
+    @apply rounded-xl;
+    background: rgb(243, 244, 246);
+    border: 2rpx solid rgb(229, 231, 235);
   }
-  :deep(.wd-input__inner) {
-    min-height: auto;
-    height: 24px;
-    line-height: 24px;
-  }
-  :deep(.wd-input__clear) {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-}
-
-.submit-btn {
-  :deep(.wd-button) {
-    border-radius: 999px;
-    height: 48px;
-    font-size: 16px;
-    font-weight: 600;
+  .submit-btn {
+    .wd-button {
+      border-radius: 999px;
+      height: 48px;
+      font-size: 16px;
+      font-weight: 600;
+    }
   }
 }
 </style>
