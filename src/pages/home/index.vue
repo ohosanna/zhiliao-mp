@@ -1,121 +1,122 @@
 <script setup lang="ts">
 definePage({
-  name: 'home',
+  name: "home",
+  layout: "tabbar",
   style: {
-    navigationBarTitleText: '',
-    navigationStyle: 'custom',
+    navigationBarTitleText: "",
+    navigationStyle: "custom",
   },
-})
+});
 
-const statusBarHeight = ref(20)
+const statusBarHeight = ref(20);
 
 // #ifdef MP-WEIXIN
-const sysInfo = uni.getSystemInfoSync()
-statusBarHeight.value = sysInfo.statusBarHeight || 20
+const sysInfo = uni.getSystemInfoSync();
+statusBarHeight.value = sysInfo.statusBarHeight || 20;
 // #endif
 
 const user = {
-  avatarText: '张',
-  greet: '早上好',
-  name: '张建国',
-}
+  avatarText: "张",
+  greet: "早上好",
+  name: "张建国",
+};
 
 const cycle = {
   days: 23,
   total: 90,
   progress: 25.5,
-}
+};
 
 const shortcuts = [
-  { icon: 'upload', iconColor: '#3b82f6', title: '上传数据', sub: '引导式\n上传' },
-  { icon: 'calendar', iconColor: '#22c55e', title: '随访提醒', sub: '2条待\n处理' },
-  { icon: 'warning', iconColor: '#f59e0b', title: '异常提醒', sub: '1项异\n常' },
-]
+  { icon: "upload", iconColor: "#3b82f6", title: "上传数据", sub: "引导式\n上传" },
+  { icon: "calendar", iconColor: "#22c55e", title: "随访提醒", sub: "2条待\n处理" },
+  { icon: "warning", iconColor: "#f59e0b", title: "异常提醒", sub: "1项异\n常" },
+];
 
 const indicators = [
   {
-    name: '空腹血糖',
-    value: '6.8',
-    unit: 'mmol/L',
-    status: '偏高',
-    statusColor: '#ef4444',
-    statusBg: '#fee2e2',
+    name: "空腹血糖",
+    value: "6.8",
+    unit: "mmol/L",
+    status: "偏高",
+    statusColor: "#ef4444",
+    statusBg: "#fee2e2",
   },
   {
-    name: '糖化血红蛋白',
-    value: '6.2',
-    unit: '%',
-    status: '正常',
-    statusColor: '#22c55e',
-    statusBg: '#dcfce7',
+    name: "糖化血红蛋白",
+    value: "6.2",
+    unit: "%",
+    status: "正常",
+    statusColor: "#22c55e",
+    statusBg: "#dcfce7",
   },
   {
-    name: '血压',
-    value: '135',
-    unit: '/85 mmHg',
-    status: '临界',
-    statusColor: '#f59e0b',
-    statusBg: '#fef3c7',
+    name: "血压",
+    value: "135",
+    unit: "/85 mmHg",
+    status: "临界",
+    statusColor: "#f59e0b",
+    statusBg: "#fef3c7",
   },
-]
+];
 
 const reminds = [
   {
-    icon: 'warning',
-    iconColor: '#ef4444',
-    iconBg: '#fee2e2',
-    title: '空腹血糖偏高',
-    desc: '最近3天空腹血糖均值7.2mmol/L，超出控制目标',
-    time: '今天 08:30',
+    icon: "warning",
+    iconColor: "#ef4444",
+    iconBg: "#fee2e2",
+    title: "空腹血糖偏高",
+    desc: "最近3天空腹血糖均值7.2mmol/L，超出控制目标",
+    time: "今天 08:30",
   },
   {
-    icon: 'edit',
-    iconColor: '#3b82f6',
-    iconBg: '#eff6ff',
-    title: '随访提醒：第4周复查',
-    desc: '请于3天内完成糖化血红蛋白及血脂四项检查',
-    deadline: '截止日期：2025-02-15',
+    icon: "edit",
+    iconColor: "#3b82f6",
+    iconBg: "#eff6ff",
+    title: "随访提醒：第4周复查",
+    desc: "请于3天内完成糖化血红蛋白及血脂四项检查",
+    deadline: "截止日期：2025-02-15",
   },
-]
+];
 
 const reports = [
-  { name: '血常规', status: '已上传', color: '#22c55e' },
-  { name: '血脂四项', status: '已上传', color: '#22c55e' },
-  { name: '肝功能报告', status: '待上传', color: '#f59e0b' },
-  { name: '肾功能报告', status: '待上传', color: '#f59e0b' },
-  { name: '超声报告', status: '待上传', color: '#f59e0b' },
-  { name: '糖化检查报告', status: '待上传', color: '#f59e0b' },
-]
+  { name: "血常规", status: "已上传", color: "#22c55e" },
+  { name: "血脂四项", status: "已上传", color: "#22c55e" },
+  { name: "肝功能报告", status: "待上传", color: "#f59e0b" },
+  { name: "肾功能报告", status: "待上传", color: "#f59e0b" },
+  { name: "超声报告", status: "待上传", color: "#f59e0b" },
+  { name: "糖化检查报告", status: "待上传", color: "#f59e0b" },
+];
 
 const activities = [
   {
-    tag: '免费',
-    tagColor: '#22c55e',
-    tagBg: '#dcfce7',
-    time: '3月15日 08:30-11:30',
-    title: '慢病院控糖筛查免费测活动',
-    desc: '内分泌科举办糖尿病免费筛查，含空腹血糖、糖化血红蛋白检查及专家咨询',
-    location: '|  慢病院门诊一楼大厅',
+    tag: "免费",
+    tagColor: "#22c55e",
+    tagBg: "#dcfce7",
+    time: "3月15日 08:30-11:30",
+    title: "慢病院控糖筛查免费测活动",
+    desc: "内分泌科举办糖尿病免费筛查，含空腹血糖、糖化血红蛋白检查及专家咨询",
+    location: "|  慢病院门诊一楼大厅",
   },
   {
-    tag: '免费',
-    tagColor: '#22c55e',
-    tagBg: '#dcfce7',
-    time: '3月22日 14:00-16:00',
-    title: '社区健康讲座：糖尿病饮食管理',
-    desc: '营养科专家讲解糖尿病饮食原则，现场提供个性化饮食方案指导及免费体检套餐',
-    location: '|  和平区疾控艾防社区活动中心 2楼会议室',
+    tag: "免费",
+    tagColor: "#22c55e",
+    tagBg: "#dcfce7",
+    time: "3月22日 14:00-16:00",
+    title: "社区健康讲座：糖尿病饮食管理",
+    desc: "营养科专家讲解糖尿病饮食原则，现场提供个性化饮食方案指导及免费体检套餐",
+    location: "|  和平区疾控艾防社区活动中心 2楼会议室",
   },
   {
-    tag: '免费',
-    tagColor: '#22c55e',
-    tagBg: '#dcfce7',
-    time: '4月5日 07:00-09:00',
-    title: '春季糖友健步走活动',
-    desc: '组织糖友开展春季户外健步走，专业医护全程陪同，现场免费测血糖及足部检查',
-    location: '|  中山公园南门集合',
+    tag: "免费",
+    tagColor: "#22c55e",
+    tagBg: "#dcfce7",
+    time: "4月5日 07:00-09:00",
+    title: "春季糖友健步走活动",
+    desc: "组织糖友开展春季户外健步走，专业医护全程陪同，现场免费测血糖及足部检查",
+    location: "|  中山公园南门集合",
   },
-]
+];
 
 function handleNotify() {}
 function goToAll() {}
@@ -135,7 +136,7 @@ function goToMore() {}
         <view class="flex items-center gap-3">
           <view
             class="flex h-10 w-10 items-center justify-center rounded-full text-base font-bold text-white"
-            style="background-color: rgba(255,255,255,0.2)"
+            style="background-color: rgba(255, 255, 255, 0.2)"
           >
             {{ user.avatarText }}
           </view>
@@ -150,7 +151,7 @@ function goToMore() {}
         </view>
         <view
           class="flex h-9 w-9 items-center justify-center rounded-full"
-          style="background-color: rgba(255,255,255,0.15)"
+          style="background-color: rgba(255, 255, 255, 0.15)"
           @click="handleNotify"
         >
           <wd-icon name="bell" size="18px" color="#fff" />
@@ -159,38 +160,28 @@ function goToMore() {}
       </view>
 
       <!-- 90天管理周期卡 -->
-      <view class="mt-4 rounded-2xl p-4" style="background-color: rgba(255,255,255,0.15)">
+      <view class="mt-4 rounded-2xl p-4" style="background-color: rgba(255, 255, 255, 0.15)">
         <view class="flex items-center justify-between">
           <view class="flex items-center gap-2">
             <wd-icon name="calendar" size="16px" color="#fff" />
-            <text class="text-sm text-white">
-              90天健康周期
-            </text>
+            <text class="text-sm text-white"> 90天健康周期 </text>
           </view>
           <view class="rounded-full bg-white px-3 py-0.5">
-            <text class="text-xs font-medium text-blue-500">
-              第 {{ cycle.days }} 天
-            </text>
+            <text class="text-xs font-medium text-blue-500"> 第 {{ cycle.days }} 天 </text>
           </view>
         </view>
 
         <view class="mt-3 flex items-center justify-between">
-          <text class="text-xs text-white/80">
-            开始
-          </text>
-          <text class="text-xs text-white/80">
-            已完成 {{ cycle.progress }}%
-          </text>
-          <text class="text-xs text-white/80">
-            90天
-          </text>
+          <text class="text-xs text-white/80"> 开始 </text>
+          <text class="text-xs text-white/80"> 已完成 {{ cycle.progress }}% </text>
+          <text class="text-xs text-white/80"> 90天 </text>
         </view>
 
-        <view class="mt-2 h-1.5 w-full overflow-hidden rounded-full" style="background-color: rgba(255,255,255,0.2)">
-          <view
-            class="h-full rounded-full bg-white"
-            :style="{ width: `${cycle.progress}%` }"
-          />
+        <view
+          class="mt-2 h-1.5 w-full overflow-hidden rounded-full"
+          style="background-color: rgba(255, 255, 255, 0.2)"
+        >
+          <view class="h-full rounded-full bg-white" :style="{ width: `${cycle.progress}%` }" />
         </view>
       </view>
     </view>
@@ -223,13 +214,9 @@ function goToMore() {}
     <!-- 关键健康指标 -->
     <view class="mx-4 mt-3 rounded-2xl bg-white p-4 shadow-sm">
       <view class="mb-3 flex items-center justify-between">
-        <text class="text-base font-bold wot-text-text-main">
-          关键健康指标
-        </text>
+        <text class="text-base font-bold wot-text-text-main"> 关键健康指标 </text>
         <view class="flex items-center gap-1" @click="goToAll">
-          <text class="text-sm text-blue-500">
-            查看全部
-          </text>
+          <text class="text-sm text-blue-500"> 查看全部 </text>
           <wd-icon name="arrow-right" size="12px" color="#3b82f6" />
         </view>
       </view>
@@ -265,13 +252,9 @@ function goToMore() {}
     <!-- 最新提醒 -->
     <view class="mx-4 mt-3 rounded-2xl bg-white p-4 shadow-sm">
       <view class="mb-3 flex items-center justify-between">
-        <text class="text-base font-bold wot-text-text-main">
-          最新提醒
-        </text>
+        <text class="text-base font-bold wot-text-text-main"> 最新提醒 </text>
         <view class="flex items-center gap-1" @click="goToAll">
-          <text class="text-sm text-blue-500">
-            全部
-          </text>
+          <text class="text-sm text-blue-500"> 全部 </text>
           <wd-icon name="arrow-right" size="12px" color="#3b82f6" />
         </view>
       </view>
@@ -307,20 +290,12 @@ function goToMore() {}
     <!-- 数据上传进度 -->
     <view class="mx-4 mt-3 rounded-2xl bg-white p-4 shadow-sm">
       <view class="mb-3 flex items-center justify-between">
-        <text class="text-base font-bold wot-text-text-main">
-          数据上传进度
-        </text>
-        <text class="text-sm text-blue-500" @click="goToUpload">
-          去上传
-        </text>
+        <text class="text-base font-bold wot-text-text-main"> 数据上传进度 </text>
+        <text class="text-sm text-blue-500" @click="goToUpload"> 去上传 </text>
       </view>
 
       <view class="space-y-2.5">
-        <view
-          v-for="(item, idx) in reports"
-          :key="idx"
-          class="flex items-center justify-between"
-        >
+        <view v-for="(item, idx) in reports" :key="idx" class="flex items-center justify-between">
           <view class="flex items-center gap-2">
             <view
               class="flex h-5 w-5 items-center justify-center rounded-full"
@@ -342,13 +317,9 @@ function goToMore() {}
     <!-- 健康活动通知 -->
     <view class="mx-4 mt-3 mb-4 rounded-2xl bg-white p-4 shadow-sm">
       <view class="mb-3 flex items-center justify-between">
-        <text class="text-base font-bold wot-text-text-main">
-          健康活动通知
-        </text>
+        <text class="text-base font-bold wot-text-text-main"> 健康活动通知 </text>
         <view class="flex items-center gap-1" @click="goToMore">
-          <text class="text-sm text-blue-500">
-            更多活动
-          </text>
+          <text class="text-sm text-blue-500"> 更多活动 </text>
           <wd-icon name="arrow-right" size="12px" color="#3b82f6" />
         </view>
       </view>

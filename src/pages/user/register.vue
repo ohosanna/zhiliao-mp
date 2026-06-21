@@ -7,6 +7,7 @@ definePage({
   },
 });
 
+const router = useRouter();
 const statusBarHeight = ref(20);
 
 // #ifdef MP-WEIXIN
@@ -27,20 +28,17 @@ const formData = ref({
 });
 
 const showDatePicker = ref(false);
-const birthdayTimestamp = ref(0);
-
-function openDatePicker() {
-  showDatePicker.value = true;
-}
+const birthdayDisplay = ref();
 
 function onDateConfirm({ value }: { value: number }) {
-  birthdayTimestamp.value = value;
+  formData.value.birthday = String(value);
   // 将时间戳格式化为日期字符串 yyyy-MM-dd
   const date = new Date(value);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  formData.value.birthday = `${year}-${month}-${day}`;
+  console.log(year, month, day);
+  birthdayDisplay.value = `${year}-${month}-${day}`;
 }
 
 function selectGender(gender: "male" | "female") {
@@ -65,6 +63,9 @@ function handleSubmit() {
     return;
   }
   uni.showToast({ title: "注册成功", icon: "success" });
+  router.pushTab({
+    name: "home",
+  });
 }
 </script>
 
@@ -183,13 +184,13 @@ function handleSubmit() {
         </view>
         <wd-form-item custom-class="input-item">
           <view class="value" @tap="showDatePicker = true">{{
-            formData.birthday || "请选择出生日期"
+            birthdayDisplay || "请选择出生日期"
           }}</view>
           <wd-datetime-picker
             v-model="formData.birthday"
             v-model:visible="showDatePicker"
-            placehold="请选择出生日期"
             type="date"
+            @confirm="onDateConfirm"
           />
         </wd-form-item>
       </view>
